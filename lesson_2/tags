@@ -1,0 +1,33 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/Users/pigknight/Documents/GitHub/vulkan_mac/lesson_2/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	/4e9f5df5/
+79C57A4429B2FEEE00AE9852	vulkan.xcodeproj/xcuserdata/pigknight.xcuserdatad/xcschemes/xcschememanagement.plist	/^		<key>79C57A4429B2FEEE00AE9852<\/key>$/;"	k	key:SuppressBuildableAutocreation
+GLFW_INCLUDE_VULKAN	vulkan/main.cpp	/^#define GLFW_INCLUDE_VULKAN$/;"	d	file:
+GLM_FORCE_DEPTH_ZERO_TO_ONE	vulkan/main.cpp	/^#define GLM_FORCE_DEPTH_ZERO_TO_ONE$/;"	d	file:
+GLM_FORCE_RADIANS	vulkan/main.cpp	/^#define GLM_FORCE_RADIANS$/;"	d	file:
+HEIGHT	vulkan/main.cpp	/^const uint32_t HEIGHT = 600;$/;"	v	typeref:typename:const uint32_t
+HelloTriangleApp	vulkan/main.cpp	/^class HelloTriangleApp$/;"	c	file:
+IDEDidComputeMac32BitWarning	vulkan.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist	/^	<key>IDEDidComputeMac32BitWarning<\/key>$/;"	k
+SchemeUserState	vulkan.xcodeproj/xcuserdata/pigknight.xcuserdatad/xcschemes/xcschememanagement.plist	/^	<key>SchemeUserState<\/key>$/;"	k
+SuppressBuildableAutocreation	vulkan.xcodeproj/xcuserdata/pigknight.xcuserdatad/xcschemes/xcschememanagement.plist	/^	<key>SuppressBuildableAutocreation<\/key>$/;"	k
+WIDTH	vulkan/main.cpp	/^const uint32_t WIDTH = 800;$/;"	v	typeref:typename:const uint32_t
+cleanup	vulkan/main.cpp	/^        void cleanup()$/;"	f	class:HelloTriangleApp	typeref:typename:void	file:
+create_instance	vulkan/main.cpp	/^        void create_instance()$/;"	f	class:HelloTriangleApp	typeref:typename:void	file:
+init_vulkan	vulkan/main.cpp	/^        void init_vulkan()$/;"	f	class:HelloTriangleApp	typeref:typename:void	file:
+init_window	vulkan/main.cpp	/^        void init_window()$/;"	f	class:HelloTriangleApp	typeref:typename:void	file:
+instance	vulkan/main.cpp	/^        VkInstance instance;$/;"	m	class:HelloTriangleApp	typeref:typename:VkInstance	file:
+main	vulkan/main.cpp	/^int main() {$/;"	f	typeref:typename:int
+main_loop	vulkan/main.cpp	/^        void main_loop()$/;"	f	class:HelloTriangleApp	typeref:typename:void	file:
+orderHint	vulkan.xcodeproj/xcuserdata/pigknight.xcuserdatad/xcschemes/xcschememanagement.plist	/^			<key>orderHint<\/key>$/;"	k	key:SchemeUserState.vulkan.xcscheme_^#shared#^_
+primary	vulkan.xcodeproj/xcuserdata/pigknight.xcuserdatad/xcschemes/xcschememanagement.plist	/^			<key>primary<\/key>$/;"	k	key:SuppressBuildableAutocreation.79C57A4429B2FEEE00AE9852
+run	vulkan/main.cpp	/^        void run()$/;"	f	class:HelloTriangleApp	typeref:typename:void	file:
+vulkan.xcscheme_^#shared#^_	vulkan.xcodeproj/xcuserdata/pigknight.xcuserdatad/xcschemes/xcschememanagement.plist	/^		<key>vulkan.xcscheme_^#shared#^_<\/key>$/;"	k	key:SchemeUserState
+window	vulkan/main.cpp	/^        GLFWwindow* window;$/;"	m	class:HelloTriangleApp	typeref:typename:GLFWwindow *	file:
