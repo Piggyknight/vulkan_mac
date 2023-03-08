@@ -1,6 +1,7 @@
 #include <cstdlib>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -11,23 +12,41 @@
 #include <stdexcept>
 #include <vector>
 #include <optional>
+#include <set>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
+const std::vector<const char*> validationLayers = {
+    "VK_LAYER_KHRONOS_validation"
+};
+
+#ifdef NDEBUG
+const bool enableValidationLayer = false;
+#else
+const bool enableValidationLayer = true;
+#endif
+
 class HelloTriangleApp
 {
 public:
     GLFWwindow* window;
+    
     VkInstance instance;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    VkDevice device;
+    VkSurfaceKHR surface;
+    
+    VkQueue graphicsQueue;
+    VkQueue presentQueue;
     
     struct QueueFamilyIndices
     {
         std::optional<uint32_t> graphicsFamily;
+        std::optional<uint32_t> presentFamily;
         
         bool IsComplete()
         {
-            return graphicsFamily.has_value();
+            return graphicsFamily.has_value() && presentFamily.has_value();
         }
     };
     
@@ -53,7 +72,59 @@ public:
     void init_vulkan()
     {
         create_instance();
+        create_surface();
         pickPhysicalDevice();
+        createLogicalDevice();
+    }
+    
+    void create_surface()
+    {
+        VkResult ret = glfwCreateWindowSurface(instance, window, nullptr, &surface);
+        if(ret != VK_SUCCESS)
+        {
+            std::cerr << "result error ="<<ret<<std::endl;
+            throw std::runtime_error("failed to create window surface!, %s");
+        }
+    }
+    
+    void createLogicalDevice()
+    {
+        QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+        
+        std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
+        std::set<uint32_t> uniqueQueueFamilies = {
+            indices.graphicsFamily.value(),
+            indices.presentFamily.value()
+        };
+        
+        float queuePriority = 1.0f;
+        for(uint32_t queueFamily : uniqueQueueFamilies)
+        {
+            VkDeviceQueueCreateInfo queueCreateInfo{};
+            queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+            queueCreateInfo.queueFamilyIndex = queueFamily;
+            queueCreateInfo.queueCount = 1;
+            queueCreateInfo.pQueuePriorities = &queuePriority;
+            queueCreateInfos.push_back(queueCreateInfo);
+        }
+        
+        VkPhysicalDeviceFeatures deviceFeature{};
+        VkDeviceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.pQueueCreateInfos = queueCreateInfos.data();
+        createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
+        createInfo.pEnabledFeatures = &deviceFeature;
+        createInfo.enabledExtensionCount = 0;
+        createInfo.enabledLayerCount = 0;
+        
+        VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);
+        if(result != VK_SUCCESS)
+        {
+            throw std::runtime_error("failed to create logical device!");
+        }
+        
+        vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+        vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
     }
 
     void pickPhysicalDevice()
@@ -104,6 +175,13 @@ public:
                 indices.graphicsFamily = i;
             }
             
+            VkBool32 presentSupport = false;
+            vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
+            if(presentSupport)
+            {
+                indices.presentFamily = i;
+            }
+            
             if(indices.IsComplete())
                 break;
             
@@ -149,16 +227,7 @@ public:
         createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
         createInfo.enabledExtensionCount = (uint32_t)requiredExtensions.size();
         createInfo.ppEnabledExtensionNames = requiredExtensions.data();
-        
-        const std::vector<const char*> validationLayers = {
-            "VK_LAYER_KHRONOS_validation"
-        };
-        
-#ifdef NDEBUG
-        const bool enableValidationLayer = false;
-#else
-        const bool enableValidationLayer = true;
-#endif
+
         if(enableValidationLayer && !checkValidationLayerSupport(validationLayers))
         {
             throw std::runtime_error("validation layers requested, but not available!");
@@ -233,6 +302,8 @@ public:
 
     void cleanup()
     {
+        vkDestroyDevice(device, nullptr);
+        vkDestroySurfaceKHR(instance, surface, nullptr);
         vkDestroyInstance(instance, nullptr);
         glfwDestroyWindow(window);
         glfwTerminate();
